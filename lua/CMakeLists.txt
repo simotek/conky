@@ -45,7 +45,7 @@ if(BUILD_X11)
   endif(BUILD_LUA_CAIRO)
 
   if(BUILD_LUA_IMLIB2)
-    include_directories(${luaimlib2_includes} ${CMAKE_CURRENT_SOURCE_DIR})
+    include_directories(${luaimlib2_includes} ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
     if(IMLIB2_VERSION VERSION_GREATER_EQUAL "1.10.0")
       wrap_tolua(luaimlib2_src imlib2.pkg)
@@ -75,7 +75,6 @@ if(BUILD_X11)
     print_target_properties(conky-rsvg)
   endif(BUILD_LUA_RSVG)
 
-
   if(BUILD_LUA_CAIRO AND BUILD_LUA_IMLIB2)
     include_directories(${luacairo_includes} ${luaimlib2_includes}
                         ${CMAKE_CURRENT_SOURCE_DIR})
@@ -91,7 +90,7 @@ if(BUILD_X11)
                           toluapp_lib_static)
     set(lua_libs ${lua_libs} conky-cairo_imlib2_helper)
   endif(BUILD_LUA_CAIRO AND BUILD_LUA_IMLIB2)
-  
+
   if(BUILD_LUA_CAIRO AND BUILD_LUA_TEXT)
     include_directories(${luacairo_includes} ${luatext_includes}
                         ${CMAKE_CURRENT_SOURCE_DIR})
