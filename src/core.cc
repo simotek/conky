@@ -9,7 +9,7 @@
  * Please see COPYING for details
  *
  * Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
- * Copyright (c) 2005-2021 Brenden Matthews, Philip Kovacs, et. al.
+ * Copyright (c) 2005-2024 Brenden Matthews, Philip Kovacs, et. al.
  *	(see AUTHORS)
  * All rights reserved.
  *
@@ -836,7 +836,6 @@ struct text_object *construct_text_object(char *s, const char *arg, long line,
   obj->callbacks.free = &gen_free_opaque;
 #endif /* BUILD_GUI */
   END OBJ(conky_version, nullptr) obj_be_plain_text(obj, VERSION);
-  END OBJ(conky_build_date, nullptr) obj_be_plain_text(obj, BUILD_DATE);
   END OBJ(conky_build_arch, nullptr) obj_be_plain_text(obj, BUILD_ARCH);
   END OBJ(downspeed, &update_net_stats)
       parse_net_stat_arg(obj, arg, free_at_crash);
@@ -2008,6 +2007,13 @@ struct text_object *construct_text_object(char *s, const char *arg, long line,
   obj->callbacks.free = &free_pulseaudio;
   init_pulseaudio(obj);
   END OBJ(pa_card_name, 0) obj->callbacks.print = &print_puau_card_name;
+  obj->callbacks.free = &free_pulseaudio;
+  init_pulseaudio(obj);
+  END OBJ_IF(if_pa_source_running, 0) obj->callbacks.iftest =
+      &puau_source_running;
+  obj->callbacks.free = &free_pulseaudio;
+  init_pulseaudio(obj);
+  END OBJ_IF(if_pa_source_muted, 0) obj->callbacks.iftest = &puau_source_muted;
   obj->callbacks.free = &free_pulseaudio;
   init_pulseaudio(obj);
 #endif /* BUILD_PULSEAUDIO */

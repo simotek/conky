@@ -4,7 +4,7 @@
  *
  * Please see COPYING for details
  *
- * Copyright (c) 2005-2021 Brenden Matthews, Philip Kovacs, et. al.
+ * Copyright (c) 2005-2024 Brenden Matthews, Philip Kovacs, et. al.
  *	(see AUTHORS)
  * All rights reserved.
  *
@@ -46,7 +46,7 @@ void cairo_place_image(const char *file, cairo_t *cr, int x, int y,
     return;
   }
 
-  image = imlib_load_image(file);
+  image = (Imlib_Image *)imlib_load_image(file);
   if (!image) {
     NORM_ERR("cairoimagehelper: Couldn't load %s\n", file);
     return;
@@ -87,7 +87,7 @@ void cairo_place_image(const char *file, cairo_t *cr, int x, int y,
 
   /* now pass the result to cairo */
   result = cairo_image_surface_create_for_data(
-      (void *)imlib_image_get_data_for_reading_only(), CAIRO_FORMAT_ARGB32,
+      (unsigned char  *)imlib_image_get_data_for_reading_only(), CAIRO_FORMAT_ARGB32,
       width, height, stride);
 
   cairo_set_source_surface(cr, result, x, y);
@@ -124,7 +124,7 @@ void cairo_draw_image(const char *file, cairo_surface_t *cs, int x, int y,
     return;
   }
 
-  Imlib_Image *image = imlib_load_image(file);
+  Imlib_Image *image = (Imlib_Image *)imlib_load_image(file);
   if (!image) {
     NORM_ERR("cairoimagehelper: Couldn't load %s\n", file);
     return;

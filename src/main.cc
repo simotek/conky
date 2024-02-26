@@ -8,7 +8,7 @@
  *
  * Please see COPYING for details
  *
- * Copyright (c) 2005-2021 Brenden Matthews, Philip Kovacs, et. al.
+ * Copyright (c) 2005-2024 Brenden Matthews, Philip Kovacs, et. al.
  *	(see AUTHORS)
  * All rights reserved.
  *
@@ -57,8 +57,7 @@
 #endif /* BUILD_BUILTIN_CONFIG */
 
 static void print_version() {
-  std::cout << _(PACKAGE_NAME " " VERSION " compiled " BUILD_DATE
-                              " for " BUILD_ARCH
+  std::cout << _(PACKAGE_NAME " " VERSION " compiled for " BUILD_ARCH
                               "\n"
                               "\nCompiled in features:\n\n"
                               "System config file: " SYSTEM_CONFIG_FILE
