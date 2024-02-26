@@ -293,8 +293,6 @@ values:
       - var2
   - name: conky_build_arch
     desc: CPU architecture Conky was built for.
-  - name: conky_build_date
-    desc: Date Conky was built.
   - name: conky_version
     desc: Conky version.
   - name: cpu
@@ -953,6 +951,15 @@ values:
     desc: |-
       If Pulseaudio's default sink is muted, display everything
       between $if_pa_sink_muted and the corresponding $else or $endif.
+  - name: if_pa_source_running
+    desc: |-
+      If Pulseaudio's default source is running (e.g. a program is accessing
+      your microphone), display everything between $if_pa_source_running and
+      the corresponding $else or $endif.
+  - name: if_pa_source_muted
+    desc: |-
+      If Pulseaudio's default source (e.g. your microphone) is muted, display
+      everything between $if_pa_source_muted and the corresponding $else or $endif.
   - name: if_running
     desc:
       "If PROCESS is running, display everything between\n$if_running and the corresponding\
@@ -1058,7 +1065,7 @@ values:
       'max_msg_lines' entries if specified.
     args:
       - server(:port)
-      - "#channel"
+      - '#channel'
       - (max_msg_lines)
   - name: journal
     desc: |-

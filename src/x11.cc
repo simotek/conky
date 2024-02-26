@@ -9,7 +9,7 @@
  * Please see COPYING for details
  *
  * Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
- * Copyright (c) 2005-2021 Brenden Matthews, Philip Kovacs, et. al.
+ * Copyright (c) 2005-2024 Brenden Matthews, Philip Kovacs, et. al.
  *	(see AUTHORS)
  * All rights reserved.
  *
@@ -246,7 +246,7 @@ static int x11_error_handler(Display *d, XErrorEvent *err) {
         xcb_errors_ctx, err->error_code, &extension);
     if (extension != nullptr) {
       const std::size_t size = strlen(base_name) + strlen(extension) + 4;
-      error_name = new char(size);
+      error_name = new char[size];
       snprintf(error_name, size, "%s (%s)", base_name, extension);
       name_allocated = true;
     } else {
@@ -258,8 +258,8 @@ static int x11_error_handler(Display *d, XErrorEvent *err) {
     const char *minor = xcb_errors_get_name_for_minor_code(
         xcb_errors_ctx, err->request_code, err->minor_code);
     if (minor != nullptr) {
-      const std::size_t size = strlen(base_name) + strlen(extension) + 4;
-      code_description = new char(size);
+      const std::size_t size = strlen(major) + strlen(minor) + 4;
+      code_description = new char[size];
       snprintf(code_description, size, "%s - %s", major, minor);
       code_allocated = true;
     } else {
@@ -284,7 +284,7 @@ static int x11_error_handler(Display *d, XErrorEvent *err) {
   }
   if (code_description == nullptr) {
     const std::size_t size = 37;
-    code_description = new char(size);
+    code_description = new char[size];
     snprintf(code_description, size, "error code: [major: %i, minor: %i]",
              err->request_code, err->minor_code);
     code_allocated = true;
@@ -297,8 +297,8 @@ static int x11_error_handler(Display *d, XErrorEvent *err) {
       error_name, reinterpret_cast<uint64_t>(err->display),
       static_cast<int64_t>(err->resourceid), err->serial, code_description);
 
-  if (name_allocated) free(error_name);
-  if (code_allocated) free(code_description);
+  if (name_allocated) delete[] error_name;
+  if (code_allocated) delete[] code_description;
 
   return 0;
 }
@@ -1402,6 +1402,9 @@ Window query_x11_window_at_pos(Display *display, int x, int y) {
   Window last = None;
   XQueryPointer(display, window.root, &root_return, &last, &root_x_return,
                 &root_y_return, &win_x_return, &win_y_return, &mask_return);
+
+  // If root, last descendant will be wrong
+  if (last == 0) return 0;
 
   // X11 correctly returns a window which covers conky area, but returned
   // window is not window.window, but instead a parent node in some cases and

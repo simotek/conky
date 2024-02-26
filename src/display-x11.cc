@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2018-2021 François Revol et al.
  * Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
- * Copyright (c) 2005-2021 Brenden Matthews, Philip Kovacs, et. al.
+ * Copyright (c) 2005-2024 Brenden Matthews, Philip Kovacs, et. al.
  *	(see AUTHORS)
  * All rights reserved.
  *
@@ -411,15 +411,16 @@ bool display_output_x11::main_loop_wait(double t) {
             query_x11_window_at_pos(display, data->root_x, data->root_y);
 
         static bool cursor_inside = false;
-        if ((query_result != 0 && query_result == window.window) ||
-            ((query_result == window.desktop || query_result == window.root ||
-              query_result == 0) &&
-             data->root_x >= window.x &&
-             data->root_x < (window.x + window.width) &&
-             data->root_y >= window.y &&
-             data->root_y < (window.y + window.height))) {
-          // cursor is inside conky
 
+        // - over conky window
+        // - conky has now window, over desktop and within conky region
+        bool cursor_over_conky = query_result == window.window &&
+                                 (window.window != 0u ||
+                                  (data->root_x >= window.x &&
+                                   data->root_x < (window.x + window.width) &&
+                                   data->root_y >= window.y &&
+                                   data->root_y < (window.y + window.height)));
+        if (cursor_over_conky) {
           if (!cursor_inside) {
             llua_mouse_hook(mouse_crossing_event(
                 mouse_event_t::AREA_ENTER, data->root_x - window.x,
@@ -450,10 +451,7 @@ bool display_output_x11::main_loop_wait(double t) {
         XUnionRectWithRegion(&r, x11_stuff.region, x11_stuff.region);
         XSync(display, False);
 
-        // modify for propagation
-        ev.xexpose.x += window.x;
-        ev.xexpose.y += window.y;
-        break;
+        continue;
       }
 
       case PropertyNotify: {

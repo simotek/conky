@@ -4,7 +4,7 @@
  *
  * Please see COPYING for details
  *
- * Copyright (c) 2005-2021 Brenden Matthews, Philip Kovacs, et. al.
+ * Copyright (c) 2005-2024 Brenden Matthews, Philip Kovacs, et. al.
  *	(see AUTHORS)
  * All rights reserved.
  *
@@ -87,8 +87,8 @@ void cairo_place_image(const char *file, cairo_t *cr, int x, int y,
 
   /* now pass the result to cairo */
   result = cairo_image_surface_create_for_data(
-      (void *)imlib_image_get_data_for_reading_only(), CAIRO_FORMAT_ARGB32,
-      width, height, stride);
+      (unsigned char  *)imlib_image_get_data_for_reading_only(), CAIRO_FORMAT_ARGB32,
+      scaled_w, scaled_h, sizeof(DATA32) * scaled_w);
 
   cairo_set_source_surface(cr, result, x, y);
   cairo_paint_with_alpha(cr, alpha);
@@ -151,6 +151,7 @@ void cairo_draw_image(const char *file, cairo_surface_t *cs, int x, int y,
   cairo_place_image(file, cr, x, y, scaled_w, scaled_h, 1.0);
 
   cairo_destroy(cr);
+  cairo_surface_destroy(result);
 }
 
 #endif /* _LIBCAIRO_IMAGE_HELPER_H_ */
