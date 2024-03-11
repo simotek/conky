@@ -11,19 +11,20 @@
     "url": "https://github.com/brndnmtthws/conky/issues"
   },
   "scripts": {
-    "dev": "next dev",
-    "dev:watch": "next-remote-watch ./documents",
-    "build": "next build",
-    "start": "next start",
-    "export": "next build && next export",
+    "dev": "npm run write-search-index && next dev",
+    "dev:watch": "npm run write-search-index && next-remote-watch ./documents",
+    "build": "npm run write-search-index && next build",
+    "start": "npm run write-search-index && next start",
+    "export": "npm run write-search-index && next build && next export",
     "lint": "next lint",
     "e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
-    "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\""
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
+    "write-search-index": "tsx ./scripts/write-search-index.ts"
   },
   "dependencies": {
-    "@fontsource-variable/fira-code": "^5.0.16",
-    "@fontsource-variable/inter": "^5.0.16",
-    "@fontsource-variable/newsreader": "^5.0.17",
+    "@fontsource-variable/fira-code": "^5.0.17",
+    "@fontsource-variable/inter": "^5.0.17",
+    "@fontsource-variable/newsreader": "^5.0.18",
     "@headlessui/react": "^1.7.18",
     "@netlify/plugin-nextjs": "^4.41.3",
     "@tailwindcss/typography": "^0.5.10",
@@ -32,7 +33,7 @@
     "fuse.js": "^7.0.0",
     "gray-matter": "^4.0.3",
     "inter-ui": "^4.0.2",
-    "next": "^14.1.0",
+    "next": "^14.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
@@ -40,17 +41,17 @@
     "rehype-react": "^8.0.0"
   },
   "devDependencies": {
-    "@types/eslint": "^8.56.3",
+    "@types/eslint": "^8.56.5",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^20.11.20",
-    "@types/react": "^18.2.57",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.62",
     "@types/react-dom": "^18.2.19",
-    "@typescript-eslint/eslint-plugin": "^7.0.2",
-    "@typescript-eslint/parser": "^7.0.2",
-    "autoprefixer": "^10.4.17",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "autoprefixer": "^10.4.18",
     "cypress": "^13.6.6",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^14.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.1.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-mdx": "^3.1.5",
@@ -64,6 +65,7 @@
     "remark-rehype": "^11.1.0",
     "start-server-and-test": "^2.0.3",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   }
 }
